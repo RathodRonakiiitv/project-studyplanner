@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Virtual Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-purple: #6c5ce7;
+            --dark-purple: #5541d7;
+            --light-purple: #a393eb;
+            --white: #ffffff;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-purple) 0%, var(--dark-purple) 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .about-page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            background: var(--primary-purple);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--white);
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin: 0 0 1rem 0;
+            color: var(--white);
+        }
+
+        .hero-content p {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .mission-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .mission-content h2 {
+            color: var(--primary-purple);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .mission-content p {
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .features-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .features-section h2 {
+            color: var(--primary-purple);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: #f8f9fa;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-purple);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .team-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .team-section h2 {
+            color: var(--primary-purple);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            background: #f8f9fa;
+        }
+
+        .member-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            background: var(--light-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .member-image i {
+            font-size: 3rem;
+            color: var(--white);
+        }
+
+        .team-member h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .team-member p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: var(--primary-purple);
+            color: var(--white);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            margin-bottom: 1rem;
+        }
+
+        .team-members {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .team-members li {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .about-page {
+                padding: 1rem;
+            }
+
+            .hero-content h2 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><img src="32-512.jpg" alt="logo">Virtual Study Planner</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="task.html">TaskManager</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a id="sign" href="sign.html">Signin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="about-page">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2>About Virtual Study Planner</h2>
+                <p>Your personal study assistant for academic success</p>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mission-section">
+            <div class="mission-content">
+                <h2>Our Mission</h2>
+                <p>To empower students worldwide with an intelligent, intuitive, and personalized study planning platform that enhances learning efficiency and academic success.</p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2>Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-tasks"></i>
+                    <h3>Smart Task Management</h3>
+                    <p>Organize your study tasks with priority levels and due dates</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your study progress and productivity metrics</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Study Schedule</h3>
+                    <p>Create and manage your study schedule efficiently</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Smart Reminders</h3>
+                    <p>Never miss important study sessions or deadlines</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>Our Team</h2>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Rathod Ronak</h3>
+                    <p>Focused on optimizing the website's performance and adding interactive features.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Kaival Patel</h3>
+                    <p>Worked on the design and styling, ensuring a user-friendly and visually appealing interface.</p>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>Yash Rajpurohit</h3>
+                    <p>Co-developer of the Virtual Study Planner, contributed to the website's structure and functionality.</p>
+            
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Virtual Study Planner</h3>
+                <p>Your personal study assistant for academic success</p>
+            </div>
+            <div class="footer-section">
+                <h3>Development Team</h3>
+                <ul class="team-members">
+                    <li>Rathod Ronak</li>
+                    <li>Kaival Patel</li>
+                    <li>Yash Rajpurohit</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Virtual Study Planner. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

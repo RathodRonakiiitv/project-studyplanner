@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Virtual Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><img src="32-512.jpg" alt="logo">Virtual Study Planner</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="task.html">TaskManager</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a id="sign" href="sign.html">Signin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-box">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required>
+                </div>
+                <button type="submit" id="submitBtn" class="btn primary">Register</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Registering...
+                </div>
+            </form>
+            <div class="links">
+                <p>Already have an account? <a href="sign.html">Sign in here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Virtual Study Planner</h3>
+                <p>Your personal study assistant for academic success</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="task.html">TaskManager</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Virtual Study Planner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.getElementById("registerForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        
+        const submitBtn = document.getElementById("submitBtn");
+        const errorMessage = document.getElementById("errorMessage");
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        
+        // Reset error message
+        errorMessage.textContent = "";
+        
+        const fullName = document.getElementById("fullName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+    
+        // Client-side validation
+        if (!fullName || !email || !password || !confirmPassword) {
+            errorMessage.textContent = "All fields are required";
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            errorMessage.textContent = "Passwords do not match";
+            return;
+        }
+
+        if (password.length < 6) {
+            errorMessage.textContent = "Password must be at least 6 characters long";
+            return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        loadingIndicator.style.display = "block";
+    
+        try {
+            const response = await fetch("http://localhost:5000/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    fullName, 
+                    email, 
+                    password,
+                    confirmPassword 
+                })
+            });
+    
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || "Registration failed");
+            }
+            
+            // Registration successful
+            alert("Registration successful! You can now sign in.");
+            window.location.href = "sign.html";
+            
+        } catch (error) {
+            if (error.message.includes("Failed to fetch")) {
+                errorMessage.textContent = "Unable to connect to server. Please check your connection and try again.";
+            } else {
+                errorMessage.textContent = error.message;
+            }
+        } finally {
+            // Reset loading state
+            submitBtn.disabled = false;
+            loadingIndicator.style.display = "none";
+        }
+    });
+    </script>
+
+    <style>
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .loading-indicator {
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+    </style>
+
+</body>
+</html>

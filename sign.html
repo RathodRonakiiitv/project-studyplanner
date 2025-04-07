@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Virtual Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+            background-color: #6c5ce7;
+            padding: 20px;
+        }
+
+        .auth-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-box h2 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        #loginForm {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn.primary {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .btn.primary:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: #dc3545;
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #ffe6e6;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message:not(:empty) {
+            display: block;
+        }
+        
+        .loading-indicator {
+            text-align: center;
+            color: #666;
+            min-height: 20px;
+        }
+        
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
+        .links a {
+            color: #6c5ce7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Remove any default margins/padding that might cause extra space */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Ensure no extra space between form elements */
+        form > * {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><img src="32-512.jpg" alt="logo">Virtual Study Planner</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="task.html">TaskManager</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a id="sign" href="sign.html">Signin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="auth-container">
+        <div class="auth-box">
+            <h2>Sign In</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" id="submitBtn" class="btn primary">Sign In</button>
+                <div id="errorMessage" class="error-message"></div>
+                <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Signing in...
+                </div>
+            </form>
+            <div class="links">
+                <p>Don't have an account? <a href="register.html">Register here</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Virtual Study Planner</h3>
+                <p>Your personal study assistant for academic success</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="task.html">TaskManager</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Virtual Study Planner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        
+        const submitBtn = document.getElementById("submitBtn");
+        const errorMessage = document.getElementById("errorMessage");
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        
+        // Reset error message
+        errorMessage.textContent = "";
+        
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+    
+        // Show loading state
+        submitBtn.disabled = true;
+        loadingIndicator.style.display = "block";
+    
+        try {
+            const response = await fetch("http://localhost:5000/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+    
+            let data;
+            try {
+                data = await response.json();
+            } catch (parseError) {
+                throw new Error("Unable to connect to server. Please try again later.");
+            }
+            
+            if (!response.ok) {
+                throw new Error(data.message || "Login failed");
+            }
+            
+            // Login successful
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('userId', data.user._id);
+            window.location.href = "dashboard.html";
+            
+        } catch (error) {
+            if (error.message.includes("Failed to fetch")) {
+                errorMessage.textContent = "Unable to connect to server. Please check your connection and try again.";
+            } else {
+                errorMessage.textContent = error.message;
+            }
+        } finally {
+            // Reset loading state
+            submitBtn.disabled = false;
+            loadingIndicator.style.display = "none";
+        }
+    });
+    </script>
+</body>
+</html>

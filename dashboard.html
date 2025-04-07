@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Virtual Study Planner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a393eb;
+            --background: #f5f6fa;
+            --white: #ffffff;
+            --text-dark: #2d3436;
+            --text-light: #636e72;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #ff7675;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--primary-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--text-dark);
+        }
+
+        .welcome-section h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .welcome-section p {
+            margin: 0.5rem 0 0;
+            color: var(--text-light);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .dashboard-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 2rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-header i {
+            color: var(--primary-color);
+        }
+
+        .add-button {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .add-button:hover {
+            background: var(--secondary-color);
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .task-item {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .task-info h3 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .task-info p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            background: var(--white);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-dark);
+        }
+
+        .action-button.complete {
+            color: var(--success);
+        }
+
+        .action-button.edit {
+            color: var(--warning);
+        }
+
+        .action-button.delete {
+            color: var(--danger);
+        }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .schedule-item {
+            background: var(--background);
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .schedule-time {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 0.5rem;
+            border-radius: 8px;
+            min-width: 80px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .schedule-info h3 {
+            margin: 0 0 0.25rem 0;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .schedule-info p {
+            margin: 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .submit-button {
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .submit-button:hover {
+            background: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .task-item,
+            .schedule-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .task-actions {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        /* Add new styles for header */
+        header {
+            background: var(--white);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background: var(--background);
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">
+                <img src="32-512.jpg" alt="Virtual Study Planner Logo">
+                <h1>Virtual Study Planner</h1>
+            </a>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="task.html">TaskManager</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#" id="signOutButton">Sign Out</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="dashboard">
+        <section class="welcome-section">
+            <h1>Welcome back, <span id="userName">Student</span>! 👋</h1>
+            <p>Here's your study overview for today</p>
+        </section>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-tasks"></i> Tasks</h2>
+                    <button class="add-button" onclick="openTaskModal()">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+                <div class="task-list" id="taskList">
+                    <!-- Tasks will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-calendar-alt"></i> Schedule</h2>
+                    <button class="add-button" onclick="openScheduleModal()">
+                        <i class="fas fa-plus"></i> Add Event
+                    </button>
+                </div>
+                <div class="schedule-list" id="scheduleList">
+                    <!-- Schedule items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Task</h2>
+                <button class="close-button" onclick="closeTaskModal()">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label for="taskTitle">Task Title</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskDueDate">Due Date</label>
+                    <input type="datetime-local" id="taskDueDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskPriority">Priority</label>
+                    <select id="taskPriority" required>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-button">Add Task</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Schedule Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Event</h2>
+                <button class="close-button" onclick="closeScheduleModal()">&times;</button>
+            </div>
+            <form id="scheduleForm">
+                <div class="form-group">
+                    <label for="eventTitle">Event Title</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventTime">Time</label>
+                    <input type="time" id="eventTime" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Description</label>
+                    <input type="text" id="eventDescription" required>
+                </div>
+                <button type="submit" class="submit-button">Add Event</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            if (!isLoggedIn) {
+                window.location.href = 'sign.html';
+            }
+            // Update user name
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                document.getElementById('userName').textContent = userEmail.split('@')[0];
+            }
+        }
+
+        // Initialize tasks
+        function initializeTasks() {
+            // Load tasks from localStorage first
+            const savedTasks = localStorage.getItem('dashboardTasks');
+            let tasks = [];
+            
+            if (savedTasks) {
+                try {
+                    tasks = JSON.parse(savedTasks);
+                } catch (error) {
+                    console.error('Error parsing saved tasks:', error);
+                    tasks = [];
+                }
+            }
+            
+            // If no saved tasks, use default tasks
+            if (!tasks || tasks.length === 0) {
+                tasks = [
+                    {
+                        title: 'Math Assignment',
+                        dueDate: '2024-02-20T14:00',
+                        priority: 'high'
+                    },
+                    {
+                        title: 'Science Project',
+                        dueDate: '2024-02-23T23:59',
+                        priority: 'medium'
+                    }
+                ];
+            }
+            
+            renderTasks(tasks);
+        }
+
+        // Save tasks to localStorage
+        function saveTasks(tasks) {
+            try {
+                localStorage.setItem('dashboardTasks', JSON.stringify(tasks));
+            } catch (error) {
+                console.error('Error saving tasks:', error);
+            }
+        }
+
+        // Render tasks
+        function renderTasks(tasks) {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = tasks.map(task => `
+                <div class="task-item ${task.priority}">
+                    <div class="task-info">
+                        <h3>${task.title}</h3>
+                        <p><i class="far fa-clock"></i>Due: ${formatDate(task.dueDate)}</p>
+                    </div>
+                    <div class="task-actions">
+                        <button class="action-button complete" title="Complete" onclick="completeTask('${task.title}')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="action-button delete" title="Delete" onclick="deleteTask('${task.title}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Complete task
+        function completeTask(taskTitle) {
+            const savedTasks = localStorage.getItem('dashboardTasks');
+            let tasks = [];
+            
+            if (savedTasks) {
+                try {
+                    tasks = JSON.parse(savedTasks);
+                    const taskIndex = tasks.findIndex(t => t.title === taskTitle);
+                    if (taskIndex !== -1) {
+                        tasks.splice(taskIndex, 1);
+                        saveTasks(tasks);
+                        renderTasks(tasks);
+                    }
+                } catch (error) {
+                    console.error('Error completing task:', error);
+                }
+            }
+        }
+
+        // Delete task
+        function deleteTask(taskTitle) {
+            const savedTasks = localStorage.getItem('dashboardTasks');
+            let tasks = [];
+            
+            if (savedTasks) {
+                try {
+                    tasks = JSON.parse(savedTasks);
+                    tasks = tasks.filter(t => t.title !== taskTitle);
+                    saveTasks(tasks);
+                    renderTasks(tasks);
+                } catch (error) {
+                    console.error('Error deleting task:', error);
+                }
+            }
+        }
+
+        // Initialize schedule
+        function initializeSchedule() {
+            const schedule = [
+                {
+                    time: '09:00',
+                    title: 'Math Study Session',
+                    description: 'Chapter 5: Calculus'
+                },
+                {
+                    time: '11:00',
+                    title: 'Science Revision',
+                    description: 'Physics: Mechanics'
+                },
+                {
+                    time: '14:00',
+                    title: 'English Literature',
+                    description: 'Poetry Analysis'
+                }
+            ];
+            renderSchedule(schedule);
+        }
+
+        // Render schedule
+        function renderSchedule(schedule) {
+            const scheduleList = document.getElementById('scheduleList');
+            scheduleList.innerHTML = schedule.map(event => `
+                <div class="schedule-item">
+                    <div class="schedule-time">${event.time}</div>
+                    <div class="schedule-info">
+                        <h3>${event.title}</h3>
+                        <p>${event.description}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            if (date.toDateString() === today.toDateString()) {
+                return `Today, ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+            } else if (date.toDateString() === tomorrow.toDateString()) {
+                return `Tomorrow, ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+            } else {
+                return date.toLocaleString('en-US', { 
+                    weekday: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+        }
+
+        // Modal functions
+        function openTaskModal() {
+            document.getElementById('taskModal').style.display = 'flex';
+        }
+
+        function closeTaskModal() {
+            document.getElementById('taskModal').style.display = 'none';
+        }
+
+        function openScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'flex';
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'none';
+        }
+
+        // Form submissions
+        document.getElementById('taskForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newTask = {
+                title: document.getElementById('taskTitle').value,
+                dueDate: document.getElementById('taskDueDate').value,
+                priority: document.getElementById('taskPriority').value
+            };
+            
+            // Get existing tasks
+            const savedTasks = localStorage.getItem('dashboardTasks');
+            let tasks = [];
+            
+            if (savedTasks) {
+                try {
+                    tasks = JSON.parse(savedTasks);
+                } catch (error) {
+                    console.error('Error parsing saved tasks:', error);
+                }
+            }
+            
+            // Add new task to the beginning of the array
+            tasks.unshift(newTask);
+            
+            // Save and render
+            saveTasks(tasks);
+            renderTasks(tasks);
+            
+            // Close modal and reset form
+            closeTaskModal();
+            this.reset();
+        });
+
+        document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newEvent = {
+                time: document.getElementById('eventTime').value,
+                title: document.getElementById('eventTitle').value,
+                description: document.getElementById('eventDescription').value
+            };
+            // Add event to the schedule (in a real app, this would be saved to the server)
+            const schedule = [newEvent, ...Array.from(document.querySelectorAll('.schedule-item')).map(item => ({
+                time: item.querySelector('.schedule-time').textContent,
+                title: item.querySelector('h3').textContent,
+                description: item.querySelector('p').textContent
+            }))];
+            renderSchedule(schedule);
+            closeScheduleModal();
+            this.reset();
+        });
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            initializeTasks();
+            initializeSchedule();
+        });
+
+        // Add sign out functionality
+        document.getElementById('signOutButton').addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

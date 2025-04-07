@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Study Planner - Your Personal Study Assistant</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <h1><img src="32-512.jpg" alt="logo">Virtual Study Planner</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="task.html">TaskManager</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a id="sign" href="sign.html">Signin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Organize Your Study Life</h2>
+                <p>Plan, track, and achieve your academic goals with our comprehensive study planner</p>
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn primary">Get Started</a>
+                    <a href="#features" class="btn secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://png.pngtree.com/png-clipart/20210613/original/pngtree-education-learning-self-study-illustration-png-image_6406917.jpg" alt="Study Illustration">
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features">
+            <h2>Key Features</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Smart Scheduling</h3>
+                    <p>Create and manage your study schedule with ease</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tasks"></i>
+                    <h3>Task Management</h3>
+                    <p>Organize your assignments and track progress</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Progress Tracking</h3>
+                    <p>Monitor your academic performance and growth</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bell"></i>
+                    <h3>Reminders</h3>
+                    <p>Never miss important deadlines or study sessions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section class="how-it-works">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Create your free account in seconds</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Set Your Goals</h3>
+                    <p>Define your academic objectives</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Plan Your Schedule</h3>
+                    <p>Create your personalized study plan</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Track Progress</h3>
+                    <p>Monitor your achievements and stay motivated</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials">
+            <h2>What Students Say</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"This planner has completely transformed how I manage my study time!"</p>
+                    <div class="student-info">
+                        <img src="student1.jpg" alt="Student">
+                        <div>
+                            <h4>Sarah Johnson</h4>
+                            <p>University Student</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Finally, a study planner that actually helps me stay organized!"</p>
+                    <div class="student-info">
+                        <img src="student2.jpg" alt="Student">
+                        <div>
+                            <h4>Michael Chen</h4>
+                            <p>High School Student</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="cta">
+            <h2>Ready to Transform Your Study Habits?</h2>
+            <p>Join thousands of students who have improved their academic performance</p>
+            <a href="register.html" class="btn primary">Start Your Journey</a>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Virtual Study Planner</h3>
+                <p>Your personal study assistant for academic success</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="task.html">TaskManager</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Virtual Study Planner. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        function checkAuthState() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const signInLink = document.getElementById('sign');
+            const getStartedButtons = document.querySelectorAll('.btn.primary');
+
+            if (isLoggedIn) {
+                // Update sign in button to show sign out
+                signInLink.textContent = 'Sign Out';
+                signInLink.href = '#';
+                signInLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('isLoggedIn');
+                    window.location.href = 'index.html';
+                });
+
+                // Update "Get Started" buttons to go to dashboard
+                getStartedButtons.forEach(button => {
+                    button.href = 'dashboard.html';
+                    button.textContent = 'Go to Dashboard';
+                });
+            } else {
+                // Reset to default state
+                signInLink.textContent = 'Sign In';
+                signInLink.href = 'sign.html';
+                
+                // Set "Get Started" buttons to go to registration
+                getStartedButtons.forEach(button => {
+                    button.href = 'register.html';
+                    button.textContent = 'Get Started';
+                });
+            }
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Check auth state when page loads
+        document.addEventListener('DOMContentLoaded', checkAuthState);
+    </script>
+</body>
+</html>

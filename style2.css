@@ -577,3 +577,6 @@ button:hover {
     opacity: 0.7;
     pointer-events: none;
 }
+.task-item{
+    color: rgb(79, 75, 75);
+}
